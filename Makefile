@@ -1,8 +1,6 @@
-all: Day1
-
-Day1: Day1.java
-	javac Day1.java
-
+all:
+	+$(MAKE) -C Day1
+	+$(MAKE) -C Day2
 
 clean:
-	rm -f *.class
+	rm -rf */*.class
