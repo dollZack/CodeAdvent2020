@@ -46,6 +46,7 @@ public class Day2 {
             }
         }
 
+        input_scan.close();
         return num_valid;
     }
 
@@ -90,6 +91,7 @@ public class Day2 {
             }
         }
 
+        input_scan.close();
         return num_valid;
     }
 

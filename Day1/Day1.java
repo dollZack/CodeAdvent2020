@@ -29,6 +29,8 @@ public class Day1 {
             report_entries.add(line);
         }
 
+        input_scan.close();
+
         // Find the pair
         int num = 0;
         while (num <= 1010 && product == -1) {
@@ -94,6 +96,8 @@ public class Day1 {
             line = input_scan.nextInt();
             report_entries.add(line);
         }
+
+        input_scan.close();
 
         // Find the 3-tuple
         int i = 0;
