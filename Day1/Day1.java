@@ -14,7 +14,7 @@ public class Day1 {
      * @param input_scan
      * @return The product of the numbers which sum to 2020, or -1 if not found.
      */
-    private static int ReportRepair(Scanner input_scan) {
+    private static int reportRepair(Scanner input_scan) {
         /* 
         Let's store all entries of the file into a hashset, and then iterate through
         the 1010 possible sums to 2020, exiting once we find the sum. 
@@ -55,7 +55,7 @@ public class Day1 {
      * @param input_scan
      * @return
      */
-    public static int ReportRepair2(Scanner input_scan) {
+    public static int reportRepair2(Scanner input_scan) {
         int product = -1;
         /* 
         I wonder if this can be done similarly to the previous repair...
@@ -132,10 +132,10 @@ public class Day1 {
 
         try {
             Scanner input_scan = new Scanner(new File(args[0]));
-            System.out.println("Repairs: " + ReportRepair(input_scan));
+            System.out.println("Repairs: " + reportRepair(input_scan));
 
             input_scan = new Scanner(new File(args[0]));
-            System.out.println("Repairs pt. 2: " + ReportRepair2(input_scan));
+            System.out.println("Repairs pt. 2: " + reportRepair2(input_scan));
             
         } catch (Exception e) {
             System.out.println("Error opening file:");

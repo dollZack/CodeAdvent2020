@@ -14,7 +14,7 @@ public class Day2 {
      * @param input_scan
      * @return Number of valid passwords found
      */
-    public static int ValidPasswords(Scanner input_scan) {
+    public static int validPasswords(Scanner input_scan) {
         int num_valid = 0; // count of valid passwords
 
         int low_bound, upper_bound, curr_char_count; // used for counting occurrences
@@ -60,7 +60,7 @@ public class Day2 {
      * @param input_scan
      * @return Number of valid passwords
      */
-    public static int ValidPasswords2(Scanner input_scan) {
+    public static int validPasswords2(Scanner input_scan) {
         int num_valid = 0; // count of valid passwords
 
         int index_1, index_2, curr_char_count; // used for counting occurrences
@@ -100,10 +100,10 @@ public class Day2 {
 
         try {
             Scanner input_scan = new Scanner(new File(file_path));
-            System.out.println("Valid passwords (v1): " + ValidPasswords(input_scan));
+            System.out.println("Valid passwords (v1): " + validPasswords(input_scan));
 
             input_scan = new Scanner(new File(file_path));
-            System.out.println("Valid passwords (v2): " + ValidPasswords2(input_scan));
+            System.out.println("Valid passwords (v2): " + validPasswords2(input_scan));
         } catch (Exception e) {
             e.printStackTrace();
         }
