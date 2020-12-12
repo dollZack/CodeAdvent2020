@@ -1,5 +1,5 @@
-Day3: Day2.java
-	javac Day2.java
+Day3: Day3.java
+	javac Day3.java
 
 clean:
 	rm -f *.class
