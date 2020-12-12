@@ -1,4 +1,4 @@
-Day1: Day2.java
+Day2: Day2.java
 	javac Day2.java
 
 clean:
