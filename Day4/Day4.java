@@ -11,9 +11,10 @@ public class Day4 {
      * those who are only missing cid's valid.
      * 
      * This function reads through the file of passports and returns the number
-     * which are valid, subject to our definition ;)
+     * which are valid, subject to our definition ;) Each field is space delimited,
+     * of the form <field>:<value>, and each passport is seperated by a blank line.
      * @param input_scan
-     * @return
+     * @return Number of 'valid' passports
      */
     public static int passportChecks(Scanner input_scan) {
         int valid_passports = 0;
