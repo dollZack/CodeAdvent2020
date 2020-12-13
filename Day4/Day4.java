@@ -28,28 +28,33 @@ public class Day4 {
         valid_requirements.add("ecl");
         valid_requirements.add("pid");
 
+        String[] curr_fields;
+        String          line             = input_scan.hasNextLine() ? input_scan.nextLine() : null;
+        int             valid_passports  = 0;
         HashSet<String> curr_credentials = new HashSet<String>();
 
-        int valid_passports = 0;
-        String line;
-        String[] curr_fields;
-        while(input_scan.hasNextLine()) {
-            line = input_scan.nextLine();
+        while(line != null) {
             if (line.equals("")) {
                 if (curr_credentials.containsAll(valid_requirements)) {
                     valid_passports++;
                 }
-
+                
                 curr_credentials.clear();
-
+                
             } else {
                 curr_fields = line.split(" ");
                 for (String field : curr_fields) {
                     curr_credentials.add(field.split(":")[0]);
                 }
             }
+
+            line = input_scan.hasNextLine() ? input_scan.nextLine() : null;
         }
 
+        // check current credentials at the end of the file!
+        if (curr_credentials.containsAll(valid_requirements)) {
+            valid_passports++;
+        }
 
         return valid_passports;
     }
