@@ -1,5 +1,7 @@
 package Day4;
 
+import java.io.File;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class Day4 {
@@ -17,13 +19,49 @@ public class Day4 {
      * @return Number of 'valid' passports
      */
     public static int passportChecks(Scanner input_scan) {
+        HashSet<String> valid_requirements = new HashSet<String>();
+        valid_requirements.add("byr");
+        valid_requirements.add("iyr");
+        valid_requirements.add("eyr");
+        valid_requirements.add("hgt");
+        valid_requirements.add("hcl");
+        valid_requirements.add("ecl");
+        valid_requirements.add("pid");
+
+        HashSet<String> curr_credentials = new HashSet<String>();
+
         int valid_passports = 0;
+        String line;
+        String[] curr_fields;
+        while(input_scan.hasNextLine()) {
+            line = input_scan.nextLine();
+            if (line.equals("")) {
+                if (curr_credentials.containsAll(valid_requirements)) {
+                    valid_passports++;
+                }
+
+                curr_credentials.clear();
+
+            } else {
+                curr_fields = line.split(" ");
+                for (String field : curr_fields) {
+                    curr_credentials.add(field.split(":")[0]);
+                }
+            }
+        }
 
 
         return valid_passports;
     }
 
     public static void main(String[] args) throws Exception {
-        
+        String file_name = "./Day4/day4_input.txt";
+
+        try {
+            Scanner input_scan = new Scanner(new File(file_name));
+            System.out.println("Valid passports: " + passportChecks(input_scan));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
