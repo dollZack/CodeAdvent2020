@@ -24,8 +24,8 @@ public class Day4 {
      */
     public static int passportChecks(Scanner input_scan) {
         String[] curr_fields;
-        String          line             = input_scan.hasNextLine() ? input_scan.nextLine() : null;
-        int             valid_passports  = 0;
+        String line            = input_scan.hasNextLine() ? input_scan.nextLine() : null;
+        int    valid_passports = 0;
         HashMap<String, String> curr_credentials = new HashMap<String, String>();
 
         while(line != null) {
@@ -51,12 +51,13 @@ public class Day4 {
         if (Validations.validPassport(curr_credentials)) {
             valid_passports++;
         }
+        curr_credentials.clear();
 
         return valid_passports;
     }
 
     public static void main(String[] args) throws Exception {
-        String file_name = "./Day4/day4_input.txt";
+        String file_name = "./Day4/test_input.txt";
 
         try {
             Scanner input_scan = new Scanner(new File(file_name));
