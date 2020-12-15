@@ -10,7 +10,7 @@ public class Validations {
     static final HashSet<String> valid_eyes         = new HashSet<String>(Arrays.asList("amb", "blu", "brn", "gry", "grn", "hzl", "oth"));
 
 
-    private static Boolean validByr(String byr) {
+    protected static Boolean validByr(String byr) {
         Boolean valid = true;
         if (Integer.parseInt(byr) < 1920 || Integer.parseInt(byr) > 2002) {
             valid = false;
@@ -19,7 +19,7 @@ public class Validations {
         return valid;
     }
 
-    private static Boolean validIyr(String iyr) {
+    protected static Boolean validIyr(String iyr) {
         Boolean valid = true;
         if (Integer.parseInt(iyr) < 2010 || Integer.parseInt(iyr) > 2020) {
             valid = false;
@@ -28,7 +28,7 @@ public class Validations {
         return valid;
     }
 
-    private static Boolean validEyr(String eyr) {
+    protected static Boolean validEyr(String eyr) {
         Boolean valid = true;
         if (Integer.parseInt(eyr) < 2020 || Integer.parseInt(eyr) > 2030) {
             valid = false;
@@ -37,7 +37,7 @@ public class Validations {
         return valid;
     }
 
-    private static Boolean validHgt(String hgt) {
+    protected static Boolean validHgt(String hgt) {
         Boolean valid = false;
 
         int i = 0;
@@ -45,7 +45,12 @@ public class Validations {
             i++;
         }
         
-        if (!hgt.substring(i).equals("cm") && !hgt.substring(i).equals("in")) {
+        int height_num = Integer.parseInt(hgt.substring(0, i));
+        if (hgt.substring(i).equals("cm")) {
+            valid = (height_num >= 150 && height_num <= 193);
+        } else if (hgt.substring(i).equals("in")) {
+            valid = (height_num >= 59 && height_num <= 76);
+        } else {
             valid = false;
         }
 
@@ -53,11 +58,13 @@ public class Validations {
     }
 
 
-    private static Boolean validHcl(String hcl) {
+    protected static Boolean validHcl(String hcl) {
         Boolean valid = false;
         if (hcl.charAt(0) != '#') {
             valid = false;
         } else {
+            valid = hcl.length() == 7;
+
             int i = 1;
             //every character must be 0-9 or a-f
             while (valid && i < hcl.length()) {
@@ -71,7 +78,7 @@ public class Validations {
         return valid;
     }
 
-    private static Boolean validPid(String pid) {
+    protected static Boolean validPid(String pid) {
         Boolean valid = false;
 
         if (pid.length() != 9) {
