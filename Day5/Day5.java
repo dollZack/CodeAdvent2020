@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Scanner;
 
 public class Day5 {
+
     /**
      * Time to board! Let's make sure our seats are correct...
      * The plane's boarding passes use binary partitioning, where we
@@ -27,12 +28,23 @@ public class Day5 {
         return max_seat;
     }
 
+    /**
+     * Parses given string to find row and column of seat
+     * @param curr_string
+     * @return Seat number
+     */
     protected static int seatNumber(String curr_string) {
         int row = rowSearch(curr_string);
         int column = columnSearch(curr_string);
         return row*8 + column;
     }
 
+    /**
+     * Performs binary-search like iteration through the first 7 characters
+     * of the given string to find the row of the seat.
+     * @param curr_string
+     * @return Row number
+     */
     protected static int rowSearch(String curr_string) {
         int left = 0;
         int right = 127;
@@ -50,6 +62,12 @@ public class Day5 {
         return left; // I think by here left and right should be equal?
     }
 
+    /**
+     * Performs binary-search like iteration through the last 3 characters
+     * of the given string to find the column of the seat.
+     * @param curr_string
+     * @return Column number
+     */
     protected static int columnSearch(String curr_string) {
         int left = 0;
         int right = 7;
