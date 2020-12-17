@@ -1,6 +1,7 @@
 package Day5;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class Day5 {
@@ -27,6 +28,29 @@ public class Day5 {
 
         return max_seat;
     }
+
+
+    /**
+     * The plane is missing seats in the front and back... Normally we'd find
+     * the missing seat on the boarding pass and that would be ours, but these other
+     * missing seats complicate the matters. B/c our seat is not on either end, we know
+     * the missing seat on the boarding pass who has adjacent neighbors is ours.
+     * @param input_scan
+     * @return Our seat number
+     */
+    private static int finalBoarding(Scanner input_scan) {
+        /**
+         * Thinking that I need to add every seat on the boarding pass to a hashset, and
+         * then iterate through the possible seats. If we find one which is not in our set,
+         * we check if the set contains the neighbors. If so, return this number!
+         */
+
+        HashSet<Integer> boarding_pass = new HashSet<Integer>();
+        while (input_scan.hasNextLine()) {
+            boarding_pass.add(seatNumber(input_scan.nextLine()));
+        }
+    }
+
 
     /**
      * Parses given string to find row and column of seat
