@@ -79,7 +79,7 @@ public class Validations {
     }
 
     protected static Boolean validPid(String pid) {
-        Boolean valid = false;
+        Boolean valid = true;
 
         if (pid.length() != 9) {
             valid = false;
@@ -87,7 +87,7 @@ public class Validations {
 
         int i = 0;
         while (valid && i < pid.length()) {
-            if ( !(pid.charAt(i) >= '0' && pid.charAt(i) <= '9') ) {
+            if ( !Character.isDigit(pid.charAt(i)) ) {
                 valid = false;
             }
 
@@ -149,6 +149,7 @@ public class Validations {
                     break; // never runs
             }
         }
+
 
         return valid;
     }

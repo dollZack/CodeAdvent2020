@@ -57,7 +57,7 @@ public class Day4 {
     }
 
     public static void main(String[] args) throws Exception {
-        String file_name = "./Day4/test_input.txt";
+        String file_name = "./Day4/day4_input.txt";
 
         try {
             Scanner input_scan = new Scanner(new File(file_name));
