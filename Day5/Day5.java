@@ -45,10 +45,27 @@ public class Day5 {
          * we check if the set contains the neighbors. If so, return this number!
          */
 
+        // populate hashset
         HashSet<Integer> boarding_pass = new HashSet<Integer>();
         while (input_scan.hasNextLine()) {
             boarding_pass.add(seatNumber(input_scan.nextLine()));
         }
+
+        // possible seats are 0 through 127*8+7=1023 seats. Although the first puzzle said
+        // the maximum value was 801... We should finish before we get to even 801 though
+        boolean found = false;
+        int i = 0;
+        while (!found && i <= 1023) {
+            if (!boarding_pass.contains(i)) {
+                if (boarding_pass.contains(i-1) && boarding_pass.contains(i+1)) {
+                    found = true;
+                }
+            }
+            i++;
+        }
+
+        //found on previous i
+        return i-1;
     }
 
 
@@ -114,7 +131,8 @@ public class Day5 {
 
         try {
             Scanner input_scan = new Scanner(new File(file_path));
-            System.out.println("Max row: " + binaryBoarding(input_scan));
+            // System.out.println("Max row: " + binaryBoarding(input_scan));
+            System.out.println("Seat: " + finalBoarding(input_scan));
         } catch (Exception e) {
             e.printStackTrace();
         }
