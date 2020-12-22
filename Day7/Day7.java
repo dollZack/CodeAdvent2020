@@ -1,6 +1,8 @@
 package Day7;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Day7 {
@@ -30,6 +32,24 @@ public class Day7 {
         We aren't interested in the actual values for each bag, but rather just the colors
         
         */
+        String[] curr_line;
+        HashMap<String, ArrayList<String>> color_map = new HashMap<String, ArrayList<String>>();
+
+        while (input_scan.hasNextLine()) {
+            curr_line = input_scan.nextLine().split(" bags contain ");
+            String key = curr_line[0];
+            ArrayList<String> values = new ArrayList<String>();
+            curr_line = curr_line[1].split(", ");
+            for (String color : curr_line) {
+                String[] curr_color = color.split(" ");
+                values.add(curr_color[1] + " " + curr_color[2]);
+            }
+
+            color_map.put(key, values);
+        }
+
+        System.out.println("Finished map: ");
+        System.out.println(color_map.toString());
 
         return possible_colors;
     }
