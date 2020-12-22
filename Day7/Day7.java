@@ -62,8 +62,8 @@ public class Day7 {
             curr_line = curr_line[1].split(", ");
             for (String color : curr_line) {
                 String[] curr_color = color.split(" ");
-                String new_value = curr_color[1] + " " + curr_color[2];
-                if (new_value.compareTo("other bags.") != 0) {
+                String new_value = curr_color[0] + " " + curr_color[1] + " " + curr_color[2];
+                if (new_value.compareTo("no other bags.") != 0) {
                     values.add(new_value);
                 }
             }
@@ -105,7 +105,6 @@ public class Day7 {
 
         // if we haven't looked at a color yet, we want to recurse through it's contents
         // every path recurses until it finds that it does or does not contain shiny
-        // return 
     }
 
     /**
@@ -121,6 +120,7 @@ public class Day7 {
             return 1;
         } else if (contains_map.get(color)[0] == 1) {
             // we've already recursed through this color
+            
             return contains_map.get(color)[1];
         } else {
             // recurse through the values of this color, setting our 2nd bit to whether
@@ -128,7 +128,8 @@ public class Day7 {
             int contains = 0;
             // if one of the contained bags can hold shiny gold, we so does this bag
             for (String value : color_map.get(color)) {
-                contains = containsDriver(value, contains_map, color_map) == 1 ? 1 : contains;
+                String curr_color = value.split(" ")[1] + " " + value.split(" ")[2];
+                contains = containsDriver(curr_color, contains_map, color_map) == 1 ? 1 : contains;
             }
 
             contains_map.put(color, new int[] {1,contains}); // 1 -> we've read it, and contains -> either yes or no
