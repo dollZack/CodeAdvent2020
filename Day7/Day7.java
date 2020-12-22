@@ -15,7 +15,6 @@ public class Day7 {
      * @return Number of colors of bags which can contain our shiny gold one.
      */
     private static int handyHaversacks(Scanner input_scan) {
-        int possible_colors = 0;
 
         /* 
         Each line contains a rule of the form:
@@ -34,6 +33,7 @@ public class Day7 {
         */
         HashMap<String, ArrayList<String>> color_map = parseFile(input_scan);
 
+        return numContainSilver(color_map);
 
         /* 
         Now that we have a mapping of which bags are contained within a given color bag,
@@ -44,9 +44,14 @@ public class Day7 {
 
         */
 
-        return possible_colors;
     }
 
+    /**
+     * Builds a hashmap mapping bag colors to colors of bags they contain by reading
+     * through the file pointed to by input_scan.
+     * @param input_scan
+     * @return hashmap<String, ArrayList<String>> mapping bag colors to colors of bags they contain
+     */
     private static HashMap<String, ArrayList<String>> parseFile(Scanner input_scan) {
         HashMap<String, ArrayList<String>> color_map = new HashMap<String, ArrayList<String>>();
         String[] curr_line;
@@ -57,7 +62,10 @@ public class Day7 {
             curr_line = curr_line[1].split(", ");
             for (String color : curr_line) {
                 String[] curr_color = color.split(" ");
-                values.add(curr_color[1] + " " + curr_color[2]);
+                String new_value = curr_color[1] + " " + curr_color[2];
+                if (new_value.compareTo("other bags.") != 0) {
+                    values.add(new_value);
+                }
             }
 
             color_map.put(key, values);
@@ -65,6 +73,55 @@ public class Day7 {
 
         return color_map;
     }
+
+    private static int numContainSilver(HashMap<String, ArrayList<String>> color_map) {
+        int num_contain = 0;
+
+        // setup table <color> -> [<read yet>, <contains or not>]
+        HashMap<String, int[]> contains_table = new HashMap<String, int[]>();
+        for (String color : color_map.keySet()) {
+            contains_table.put(color, new int[] {0,0}); // first is whether or not we've checked yet, second is true or false
+        }
+
+        // recurse through the color values in dynamic-programming fashion using driver
+        for (String color : color_map.keySet()) {
+            if (contains_table.get(color)[0] == 0) {
+                containsDriver(color, contains_table, color_map); // this assumes containsDriver can actually
+                                                                // modify the table
+            }
+
+            if (contains_table.get(color)[1] == 1) {
+                num_contain++;
+            }
+        }
+
+        return num_contain;
+
+        // if we haven't looked at a color yet, we want to recurse through it's contents
+        // every path recurses until it finds that it does or does not contain shiny
+        // return 
+    }
+
+    private static int containsDriver(String color, HashMap<String, int[]> contains_map, HashMap<String, ArrayList<String>> color_map){
+        if (color.compareTo("shiny gold") == 0) {
+            return 1;
+        } else if (contains_map.get(color)[0] == 1) {
+            // we've already recursed through this color
+            return contains_map.get(color)[1];
+        } else {
+            // recurse through the values of this color, setting our 2nd bit to whether
+            // or not one of the bags contain
+            int contains = 0;
+            // if one of the contained bags can hold shiny gold, we so does this bag
+            for (String value : color_map.get(color)) {
+                contains = containsDriver(value, contains_map, color_map) == 1 ? 1 : contains;
+            }
+
+            contains_map.put(color, new int[] {1,contains}); // 1 -> we've read it, and contains -> either yes or no
+            return contains;
+        }
+    }
+
 
     public static void main(String[] args) throws Exception {
         String file_path = "./Day7/day7_input.txt";
