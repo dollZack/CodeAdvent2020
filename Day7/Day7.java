@@ -33,11 +33,11 @@ public class Day7 {
         */
         HashMap<String, ArrayList<String>> color_map = parseFile(input_scan);
 
-        return numContainSilver(color_map);
+        return numContainGold(color_map);
 
         /* 
         Now that we have a mapping of which bags are contained within a given color bag,
-        we can recurse through finding out if a given color bag contains a silver bag..
+        we can recurse through finding out if a given color bag contains a shiny gold bag..
 
         We could create a structure which holds whether or not a given color does or does not
         contain it, in a dynamic programming-like fashion...
@@ -74,7 +74,13 @@ public class Day7 {
         return color_map;
     }
 
-    private static int numContainSilver(HashMap<String, ArrayList<String>> color_map) {
+    /**
+     * Implements a dynamic programming-like recursion through the color map counting number
+     * of bags which contain shiny gold bags.
+     * @param color_map
+     * @return Number of bags which contain shiny gold bags 
+     */
+    private static int numContainGold(HashMap<String, ArrayList<String>> color_map) {
         int num_contain = 0;
 
         // setup table <color> -> [<read yet>, <contains or not>]
@@ -102,6 +108,14 @@ public class Day7 {
         // return 
     }
 
+    /**
+     * Find whether or not the given color bag contains shiny gold, updating contains_map
+     * while doing so
+     * @param color
+     * @param contains_map
+     * @param color_map
+     * @return 1 if color contains shiny gold, 0 if not
+     */
     private static int containsDriver(String color, HashMap<String, int[]> contains_map, HashMap<String, ArrayList<String>> color_map){
         if (color.compareTo("shiny gold") == 0) {
             return 1;
