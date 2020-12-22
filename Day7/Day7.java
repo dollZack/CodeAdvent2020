@@ -32,9 +32,24 @@ public class Day7 {
         We aren't interested in the actual values for each bag, but rather just the colors
         
         */
-        String[] curr_line;
-        HashMap<String, ArrayList<String>> color_map = new HashMap<String, ArrayList<String>>();
+        HashMap<String, ArrayList<String>> color_map = parseFile(input_scan);
 
+
+        /* 
+        Now that we have a mapping of which bags are contained within a given color bag,
+        we can recurse through finding out if a given color bag contains a silver bag..
+
+        We could create a structure which holds whether or not a given color does or does not
+        contain it, in a dynamic programming-like fashion...
+
+        */
+
+        return possible_colors;
+    }
+
+    private static HashMap<String, ArrayList<String>> parseFile(Scanner input_scan) {
+        HashMap<String, ArrayList<String>> color_map = new HashMap<String, ArrayList<String>>();
+        String[] curr_line;
         while (input_scan.hasNextLine()) {
             curr_line = input_scan.nextLine().split(" bags contain ");
             String key = curr_line[0];
@@ -48,11 +63,9 @@ public class Day7 {
             color_map.put(key, values);
         }
 
-        System.out.println("Finished map: ");
-        System.out.println(color_map.toString());
-
-        return possible_colors;
+        return color_map;
     }
+
     public static void main(String[] args) throws Exception {
         String file_path = "./Day7/day7_input.txt";
         try {
