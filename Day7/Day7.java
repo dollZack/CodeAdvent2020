@@ -63,15 +63,55 @@ public class Day7 {
             for (String color : curr_line) {
                 String[] curr_color = color.split(" ");
                 String new_value = curr_color[0] + " " + curr_color[1] + " " + curr_color[2];
-                if (new_value.compareTo("no other bags.") != 0) {
-                    values.add(new_value);
-                }
+                // if (new_value.compareTo("no other bags.") != 0) {
+                //     values.add(new_value);
+                // }
+                values.add(new_value);
             }
 
             color_map.put(key, values);
         }
 
         return color_map;
+    }
+
+    private static int numInsideGold(Scanner input_scan) {
+        HashMap<String, ArrayList<String>> color_map = parseFile(input_scan);
+        HashMap<String, int[]> bag_sums = new HashMap<String, int[]>();
+        for (String color: color_map.keySet()) {
+            bag_sums.put(color, new int[] {0,0});
+        }
+
+        /* 
+        again in a dynamic programming-like fashion we want to sum up total bag counts.
+
+        starting with shiny gold, we'll recurse downward until a given bag contains no other bags,
+        returning number of bags within a given bag by summing as we traverse back up
+        */
+        return insideDriver("shiny gold", color_map, bag_sums);
+    }
+
+    private static int insideDriver(String color, HashMap<String, ArrayList<String>> color_map, HashMap<String, int[]> bag_sums) {
+        if (bag_sums.get(color)[0] == 1) {
+            return bag_sums.get(color)[1];
+        } else {
+            int inside_curr = 0;
+            for (String value : color_map.get(color)) {
+                if (value.equals("no other bags.")) {
+                    // this color does not contain any other bags
+                    bag_sums.put(color, new int[] {1, 0});
+                    return 0; //if we see this string we know it was the only 'value' for this bag and can return w/o skipping any values
+                } else {
+                    String[] color_split = value.split(" ");
+                    String curr_color = color_split[1] + " " + color_split[2];
+                    int num_curr_color = Integer.parseInt(color_split[0]);
+                    inside_curr += num_curr_color + num_curr_color*insideDriver(curr_color, color_map, bag_sums);
+                }
+            }
+
+            bag_sums.put(color, new int[] {1, inside_curr});
+            return inside_curr;
+        }
     }
 
     /**
@@ -142,7 +182,8 @@ public class Day7 {
         String file_path = "./Day7/day7_input.txt";
         try {
             Scanner input_scan = new Scanner(new File(file_path));
-            System.out.println("Possible colors of outward bags: " + handyHaversacks(input_scan));
+            // System.out.println("Possible colors of outward bags: " + handyHaversacks(input_scan));
+            System.out.println("Bags inside gold: " + numInsideGold(input_scan));
         } catch (Exception e) {
             e.printStackTrace();
         }
