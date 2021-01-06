@@ -2,6 +2,7 @@ package Day8;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class Day8 {
@@ -35,7 +36,7 @@ public class Day8 {
         add them to a hashset. if ever we encounter an instruction index which we've already
         seen, this is the infinite loop described.
         */
-        int acculumator = 0;
+        int accumulator = 0;
 
         // parse file into arraylist
         ArrayList<String> instruction_set = new ArrayList<String>();
@@ -43,9 +44,44 @@ public class Day8 {
             instruction_set.add(input_scan.nextLine());
         }
 
-        
+        // Create history of instructions
+        HashSet<Integer> past_instructions = new HashSet<Integer>();
+        int instruction = 0;
 
-        return acculumator;
+        String[] instruction_arr; // used for parsing
+
+        // Execute
+        while (instruction < instruction_set.size() && !past_instructions.contains(instruction)) {
+            past_instructions.add(instruction);
+
+            instruction_arr = instruction_set.get(instruction).split(" ");
+            // acc
+            if (instruction_arr[0].equals("acc")) {
+                int delta = Integer.valueOf(instruction_arr[1].substring(1));
+                if (instruction_arr[1].charAt(0) == '+') {
+                    accumulator+=delta;
+                } else {
+                    accumulator-=delta;
+                }
+
+                instruction++;
+            // jmp
+            } else if (instruction_arr[0].equals("jmp")) {
+                int delta = Integer.valueOf(instruction_arr[1].substring(1));
+                if (instruction_arr[1].charAt(0) == '+') {
+                    instruction+=delta;
+                } else {
+                    instruction-=delta;
+                }
+            // nop
+            } else {
+                instruction++;
+            }
+        }
+
+        // exit once we've seen duplicate instruction 
+
+        return accumulator;
     }
 
 
@@ -53,7 +89,7 @@ public class Day8 {
         String file_path = "./Day8/day8_input.txt";
         try {
             Scanner input_scan = new Scanner(new File(file_path)); 
-            handheldHalting(input_scan);
+            System.out.println("Accumulator before loop: " + handheldHalting(input_scan));
         } catch (Exception e) {
             e.printStackTrace();
         }
