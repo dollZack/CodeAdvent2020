@@ -3,9 +3,13 @@ package Day9;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Scanner;
+
+import jdk.nashorn.internal.runtime.arrays.NumericElements;
 
 public class Day9 {
 
@@ -42,6 +46,47 @@ public class Day9 {
 
 
     /**
+     * Find a list of continguous numbers which sum to the invalid number
+     * @return The sum of the smallest and largest numbers in the found list.
+     */
+    private static long encodeWeakness(long wrong_number, Scanner input_scan) {
+        ArrayList<Long> numbers = new ArrayList<Long>();
+        while (input_scan.hasNext()) {
+            numbers.add(input_scan.nextLong());
+        }
+
+        Boolean list_found = false;
+        int index = 0;
+        ArrayList<Long> list = new ArrayList<Long>();
+        while (!list_found) {
+            list = new ArrayList<Long>();
+            list_found = validList(numbers, list, wrong_number, index);
+            index++;
+        }
+
+        list.sort(Comparator.naturalOrder());
+
+        return (list.get(0) + list.get(list.size()-1));
+    }
+
+    /**
+     * Populates list with contiguous numbers starting at given index. Returns when contiguous
+     * numbers are >= target.
+     * @return True if list sums to target, else false;
+     */
+    private static Boolean validList(ArrayList<Long> numbers, ArrayList<Long> list, long target, int index) {
+        long sum = 0;
+        while (sum < target) {
+            sum+=numbers.get(index);
+            list.add(numbers.get(index));
+            index++;
+        }
+
+        return sum == target ? true : false;
+    }
+
+
+    /**
      * Checks if next_num is a sum of any two of the numbers in ArrayDeque.
      * Adds next_num to last_25, and then returns the result of the check described.
      * @param next_num
@@ -66,7 +111,13 @@ public class Day9 {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        Scanner input_scan = new Scanner(new File("./Day9/day9_input.txt"));
-        System.out.println("Incorrect number: " + encodeError(input_scan));
+        Scanner input_scan1 = new Scanner(new File("./Day9/day9_input.txt"));
+        // long wrong_number = encodeError(input_scan1);
+        // System.out.println("Incorrect number: " + wrong_number);
+
+        long wrong_number = 1721308972;
+        Scanner input_scan2 = new Scanner(new File("./Day9/day9_input.txt"));
+        long weakness = encodeWeakness(wrong_number, input_scan2);
+        System.out.println("Encode weakness: " + weakness);
     }
 }
