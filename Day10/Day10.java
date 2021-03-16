@@ -63,11 +63,12 @@ public class Day10 {
         }
 
         System.out.println("diff_1: " + diff_1 + ", diff_3: " + diff_3);
+        System.out.println("diff product: " + diff_1*diff_3);
 
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        String input_string = "./Day10/day10_test_input.txt";
+        String input_string = "./Day10/day10_input.txt";
         Scanner input_scan = new Scanner(new File(input_string));
         adapterArray(input_scan);
     }
