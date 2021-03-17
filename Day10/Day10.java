@@ -109,10 +109,10 @@ public class Day10 {
          * recursions...
          */
 
-        int[] dynamic_list = new int[adapters_list.size()];
+        long[] dynamic_list = new long[adapters_list.size()];
         dynamic_list[dynamic_list.length-1] = 1;
         for (int i = dynamic_list.length-2; i >= 0; i--) {
-            int count = 0;
+            long count = 0;
             int curr_num = adapters_list.get(i);
             boolean recurse = true;
             int curr_index = i+1;
@@ -170,7 +170,7 @@ public class Day10 {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        String input_string = "./Day10/day10_test_input.txt";
+        String input_string = "./Day10/day10_input.txt";
         Scanner input_scan = new Scanner(new File(input_string));
         // adapterArray(input_scan);
         adapterCombinations(input_scan);
