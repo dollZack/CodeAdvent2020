@@ -86,17 +86,55 @@ public class Day10 {
          * Edit again: Actually, we can increment at the end, and return... Where this result is getting assigned to
          * every recursion. And per recursion level, after performing all possible recursions, we return this
          * as-updated-as-possible count.
+         * 
+         * Edit again again: This way is too inefficient. We need to prevent re-computing stuff...
+         * Our goal is to determine distinct paths... If we start from the right
          */
 
         // get our list
         ArrayList<Integer> adapters_list = generateAdapterList(input_scan);
 
-        // recurse
-        int combinations_count, curr_index;
-        combinations_count = curr_index = 0;
-        combinations_count = combinationsDriver(combinations_count, curr_index, adapters_list);
+        // // recurse
+        // int combinations_count, curr_index;
+        // combinations_count = curr_index = 0;
+        // combinations_count = combinationsDriver(combinations_count, curr_index, adapters_list);
 
-        System.out.println("Adapter combinations: " + combinations_count);
+        /**
+         * This might be possible if we start from the right side and work backwards in a dynamic programming fashion.
+         * If we have an array of the same length as our adapters_list and work backwards, a given index could indicate
+         * the number of possible ways to get to the end from that index. Then, by the time we get to the 0th item, we
+         * have a count of possible combinations from the beginning (the power outlet).
+         * 
+         * My thought right now is that we get next (leftward) entry by summing the values of all legitimate would-be 
+         * recursions...
+         */
+
+        int[] dynamic_list = new int[adapters_list.size()];
+        dynamic_list[dynamic_list.length-1] = 1;
+        for (int i = dynamic_list.length-2; i >= 0; i--) {
+            int count = 0;
+            int curr_num = adapters_list.get(i);
+            boolean recurse = true;
+            int curr_index = i+1;
+            // modify recursion logic...
+            while (recurse && curr_index <= i+3 && curr_index < adapters_list.size()) {
+                if (adapters_list.get(curr_index) - curr_num <= 3){
+                    count+=dynamic_list[curr_index];
+                    curr_index++;
+                } else {
+                    recurse = false;
+                }
+            }
+
+            //update dynamic progress
+            dynamic_list[i] = count;
+        }
+
+        //DEBUG
+        System.out.println(dynamic_list.toString());
+        //DEBUG
+
+        System.out.println("Adapter combinations: " + dynamic_list[0]);
     }
 
 
