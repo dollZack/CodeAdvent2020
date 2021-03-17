@@ -6,6 +6,21 @@ import java.util.Scanner;
 
 public class Day10 {
     
+    private static ArrayList<Integer> generateAdapterList(Scanner input_scan) {
+        ArrayList<Integer> adapters_list = new ArrayList<Integer>();
+        adapters_list.add(0);
+        
+        while (input_scan.hasNextInt()) {
+            adapters_list.add(input_scan.nextInt());
+        }
+
+        adapters_list.sort(Comparator.naturalOrder());
+        // add devices joltage, max item + 3, to end of list
+        adapters_list.add(adapters_list.size(), adapters_list.get(adapters_list.size()-1)+3);
+
+        return adapters_list;
+    }
+
     /**
      * Your battery is dead, and the power outlet produces the wrong number of jolts.
      * We must perform some foolery to with our own jolt adapters, to ensure that we can
@@ -30,16 +45,7 @@ public class Day10 {
          * and then work through it sequentially.
          */
 
-        ArrayList<Integer> adapters_list = new ArrayList<Integer>();
-        adapters_list.add(0);
-        
-        while (input_scan.hasNextInt()) {
-            adapters_list.add(input_scan.nextInt());
-        }
-
-        adapters_list.sort(Comparator.naturalOrder());
-        // add devices joltage, max item + 3, to end of list
-        adapters_list.add(adapters_list.size(), adapters_list.get(adapters_list.size()-1)+3);
+        ArrayList<Integer> adapters_list = generateAdapterList(input_scan);
 
         //DEBUG
         // System.out.println(adapters_list.toString());
@@ -67,9 +73,68 @@ public class Day10 {
 
     }
 
+    /**
+     * Now we gotta figure out all of the possible valid combinations of adapters.
+     */
+    private static void adapterCombinations(Scanner input_scan) {
+        /**
+         * brute force way: recurse through the options, passing around, incrementing and returning
+         * a variable indicating distinct recursions, which indicate distinct combinations of adapters.
+         * 
+         * I think this only works if we increment upon getting to the last item in the array.
+         * Edit: no... That might work but I'm not seeing how. I think incrementing per recursion is the way to go.
+         * Edit again: Actually, we can increment at the end, and return... Where this result is getting assigned to
+         * every recursion. And per recursion level, after performing all possible recursions, we return this
+         * as-updated-as-possible count.
+         */
+
+        // get our list
+        ArrayList<Integer> adapters_list = generateAdapterList(input_scan);
+
+        // recurse
+        int combinations_count, curr_index;
+        combinations_count = curr_index = 0;
+        combinations_count = combinationsDriver(combinations_count, curr_index, adapters_list);
+
+        System.out.println("Adapter combinations: " + combinations_count);
+    }
+
+
+    /**
+     * Considers the possible next adapters from the given index and recurses through them.
+     * The count is incremented when we get to the end of the list, and this is what we return.
+     */
+    private static int combinationsDriver(int count, int index, ArrayList<Integer> list) {
+        // base case
+        if (index == list.size()-1) {
+            return count+1;
+        // recurse
+        } else {
+            /**
+             * There are no duplicate entries, meaning there are a maximum of three possible recursions,
+             * being that the next three items are the next three logically sequential integers.
+             * We can say this because our list is sorted.
+             */
+            int curr_num = list.get(index);
+            boolean recurse = true;
+            int curr_index = index+1;
+            while (recurse && curr_index <= index+3 && curr_index < list.size()) {
+                if (list.get(curr_index) - curr_num <= 3){
+                    count = combinationsDriver(count, curr_index, list);
+                    curr_index++;
+                } else {
+                    recurse = false;
+                }
+            }
+
+            return count;
+        }
+    }
+
     public static void main(String[] args) throws FileNotFoundException {
-        String input_string = "./Day10/day10_input.txt";
+        String input_string = "./Day10/day10_test_input.txt";
         Scanner input_scan = new Scanner(new File(input_string));
-        adapterArray(input_scan);
+        // adapterArray(input_scan);
+        adapterCombinations(input_scan);
     }
 }
