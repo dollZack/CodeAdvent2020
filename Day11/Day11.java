@@ -1,5 +1,3 @@
-package Day11;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -25,8 +23,9 @@ public class Day11 {
         return seating_chart;
     }
 
+
     private static int rearrange(ArrayList<String[]> seating_chart) {
-        int num_changes = 0;
+        int changed_seats = 0;
         /**
          * iterate through all seats...
          * if L, count all adjacent occupied. if count > 0, don't change
@@ -41,11 +40,57 @@ public class Day11 {
          * 
          */
         for (int i = 0; i < seating_chart.size(); i++) {
-            String[] row = seating_chart.get(i);
+            String[] row = seating_chart.get(i); // row to be updated
+            for (int j = 0; j < row.length; j++) { // for every chair in this row
+                
+                int occupied = occupiedNearby(seating_chart, i, j);
+
+                if (row[j].equals("L") && occupied == 0) {
+                    row[j] = "#";
+                    changed_seats++;
+                } else if (row[j].equals("#") && occupied >= 4) {
+                    row[j] = "L";
+                    changed_seats++;
+                } else {
+                    //nothing
+                }
+
+                // update row before continuing
+                seating_chart.set(i, row);
+            }
         }
 
-        return num_changes;
+        return changed_seats;
     }
+
+
+    private static int occupiedNearby(ArrayList<String[]> seating_chart, int i, int j) {
+        String[] curr_row = seating_chart.get(i);
+
+        int occupied = 0;
+        // look above
+        if (i > 0) {
+            String[] above = seating_chart.get(i-1);
+            if (j > 0 && above[j-1].equals("#")) occupied++; // top left
+            if (above[j].equals("#")) occupied++; // above
+            if (j < above.length-1 && above[j+1].equals("#")) occupied++; // top right
+        }
+
+        // look at adjacent
+        if (j > 0 && curr_row[j-1].equals("#")) occupied++; // left
+        if (j < curr_row.length-1 && curr_row[j+1].equals("#")) occupied++; // right
+
+        // look below
+        if (i < seating_chart.size()-1) {
+            String[] below = seating_chart.get(i+1);
+            if (j > 0 && below[j-1].equals("#")) occupied++; // bottom left
+            if (below[j].equals("#")) occupied++; // below
+            if (j < below.length-1 && below[j+1].equals("#")) occupied++; // bottom right
+        }
+
+        return occupied;
+    }
+
 
     /**
      * Time to ride a ferry, and nobody is here yet. Time to do some puzzles
@@ -71,9 +116,14 @@ public class Day11 {
         int seats_changed = 1;
         while (seats_changed > 0) {
             seats_changed = rearrange(seating_chart);
+            //DEBUG
+            System.out.println("seats changed: " + seats_changed);
+            //DEBUG
         }
 
-        System.out.println(countSeats(seating_chart));
+        //DEBUG
+        // System.out.println(countSeats(seating_chart));
+        //DEBUG
     }
 
     public static void main(String[] args) throws FileNotFoundException {
