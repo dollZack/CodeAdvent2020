@@ -25,6 +25,28 @@ public class Day11 {
         return seating_chart;
     }
 
+    private static int rearrange(ArrayList<String[]> seating_chart) {
+        int num_changes = 0;
+        /**
+         * iterate through all seats...
+         * if L, count all adjacent occupied. if count > 0, don't change
+         * else if #, count all occupied. if >= 4, change to empty
+         * else do nothing
+         * 
+         * Counting occupied: look left and right. then look to those above, and those
+         * below. this involves checking bounds above, then left and right, then
+         * below, and left and right.
+         * 
+         * Make changes to given row as we check. Then write this new row to the ArrayList.
+         * 
+         */
+        for (int i = 0; i < seating_chart.size(); i++) {
+            String[] row = seating_chart.get(i);
+        }
+
+        return num_changes;
+    }
+
     /**
      * Time to ride a ferry, and nobody is here yet. Time to do some puzzles
      * regarding the seating situations.
@@ -43,8 +65,15 @@ public class Day11 {
         ArrayList<String[]> seating_chart = chartParser(input_scan);
 
         //DEBUG
-        printSeats(seating_chart);
+        // printSeats(seating_chart);
         //DEBUG
+
+        int seats_changed = 1;
+        while (seats_changed > 0) {
+            seats_changed = rearrange(seating_chart);
+        }
+
+        System.out.println(countSeats(seating_chart));
     }
 
     public static void main(String[] args) throws FileNotFoundException {
