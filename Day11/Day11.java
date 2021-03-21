@@ -23,9 +23,29 @@ public class Day11 {
         return seating_chart;
     }
 
+    private static ArrayList<String[]> chartCloner(ArrayList<String []> old_chart) {
+        // int row_length = old_chart.get(0).length;
+        // int num_rows = old_chart.size();
+        ArrayList<String[]> chart_clone = new ArrayList<String[]>();
+        // for (int row = 0; row < num_rows; row++) {
+        for (String[] row : old_chart) {
+            chart_clone.add(row.clone());
+            // for (int seat = 0; seat < row_length; seat++) {
+            //     new_row[seat] = curr_row[]
+            // }
+        }
 
-    private static int rearrange(ArrayList<String[]> seating_chart) {
+        return chart_clone;
+    }
+
+    private static ArrayList<String[]> rearrange(ArrayList<String[]> seating_chart) {
+        //DEBUG
+        // System.out.println("seating chart on rearrange entry: ");
+        // printSeats(seating_chart);
+        //DEBUG
+
         int changed_seats = 0;
+        ArrayList<String[]> updated_chart = chartCloner(seating_chart);
         /**
          * iterate through all seats...
          * if L, count all adjacent occupied. if count > 0, don't change
@@ -40,7 +60,7 @@ public class Day11 {
          * 
          */
         for (int i = 0; i < seating_chart.size(); i++) {
-            String[] row = seating_chart.get(i); // row to be updated
+            String[] row = seating_chart.get(i).clone(); // row to be updated
             for (int j = 0; j < row.length; j++) { // for every chair in this row
                 
                 int occupied = occupiedNearby(seating_chart, i, j);
@@ -56,11 +76,19 @@ public class Day11 {
                 }
 
                 // update row before continuing
-                seating_chart.set(i, row);
+                updated_chart.set(i, row);
             }
         }
 
-        return changed_seats;
+        //DEBUG
+        // System.out.println("\nseats changed: " + changed_seats + "\n");
+        // System.out.println("old chart: ");
+        // printSeats(seating_chart);
+        // System.out.println("\nnew chart: ");
+        // printSeats(updated_chart);
+        //DEBUG
+
+        return updated_chart;
     }
 
 
@@ -91,6 +119,24 @@ public class Day11 {
         return occupied;
     }
 
+    private static boolean seatsChanged(ArrayList<String[]> prev_chart, ArrayList<String[]> new_chart) {
+        boolean same = true;
+        for (int row = 0; row < prev_chart.size(); row++) {
+            String[] prev_row = prev_chart.get(row);
+            String[] new_row = new_chart.get(row);
+            for (int seat = 0; seat < prev_chart.get(0).length; seat++) {
+                if (!prev_row[seat].equals(new_row[seat])) {
+                    same = false;
+                }
+            }
+
+            if (!same) return true;
+        }
+
+        System.out.println("reached end of seatsChanged... 'same' value: " + same);
+        return !same;
+    }
+
 
     /**
      * Time to ride a ferry, and nobody is here yet. Time to do some puzzles
@@ -108,15 +154,21 @@ public class Day11 {
      */
     private static void seatingSystem(Scanner input_scan) {
         ArrayList<String[]> seating_chart = chartParser(input_scan);
-
+        ArrayList<String[]> prev_chart;
         //DEBUG
         // printSeats(seating_chart);
         //DEBUG
 
-        int seats_changed = 1;
-        while (seats_changed > 0) {
-            seats_changed = rearrange(seating_chart);
+        boolean seats_changed = true;
+        while (seats_changed) {
+        // for (int i = 0; i < 6; i++) {
+            prev_chart = seating_chart;
+            seating_chart = rearrange(seating_chart);
             //DEBUG
+            System.out.println("seating chart after rearrange: ");
+            printSeats(seating_chart);
+            
+            seats_changed = seatsChanged(prev_chart, seating_chart);
             System.out.println("seats changed: " + seats_changed);
             //DEBUG
         }
