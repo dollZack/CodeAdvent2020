@@ -176,21 +176,20 @@ public class Day11 {
             prev_chart = seating_chart;
             seating_chart = rearrange(seating_chart);
             //DEBUG
-            System.out.println("seating chart after rearrange: ");
-            printSeats(seating_chart);
+            // System.out.println("seating chart after rearrange: ");
+            // printSeats(seating_chart);
             
-            seats_changed = seatsChanged(prev_chart, seating_chart);
-            System.out.println("seats changed: " + seats_changed);
+            // System.out.println("seats changed: " + seats_changed);
             //DEBUG
+
+            seats_changed = seatsChanged(prev_chart, seating_chart);
         }
 
-        //DEBUG
         System.out.println(countSeats(seating_chart));
-        //DEBUG
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        String fn = "./Day11/day11_test_input.txt";
+        String fn = "./Day11/day11_input.txt";
         Scanner input_scan = new Scanner(new File(fn));
         seatingSystem(input_scan);
     }
