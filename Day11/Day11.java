@@ -137,6 +137,17 @@ public class Day11 {
         return !same;
     }
 
+    private static int countSeats(ArrayList<String[]> chart) {
+        int count = 0;
+        for (String[] row : chart) {
+            for (String seat : row) {
+                if (seat.equals("#")) count++;
+            }
+        }
+
+        return count;
+    }
+
 
     /**
      * Time to ride a ferry, and nobody is here yet. Time to do some puzzles
@@ -174,7 +185,7 @@ public class Day11 {
         }
 
         //DEBUG
-        // System.out.println(countSeats(seating_chart));
+        System.out.println(countSeats(seating_chart));
         //DEBUG
     }
 
